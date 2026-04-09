@@ -40,8 +40,8 @@ def main(page: ft.Page):
                 ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.START),
                 gradient=ft.LinearGradient(
                     colors=[Colors.BLUE_700, Colors.PURPLE_600],
-                    begin=alignment.top_left,
-                    end=alignment.bottom_right,
+                    #begin=alignment.top_left,
+                    #end=alignment.bottom_right,
                 ),
                 padding=20,
                 border_radius=16,
@@ -325,4 +325,4 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
-    ft.run(target=main)
+    ft.app(target=main)

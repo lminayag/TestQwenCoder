@@ -3,6 +3,7 @@ Interfaz principal de la aplicación Flet para billetera digital.
 Diseño mobile-first con navegación por pestañas.
 """
 import flet as ft
+from flet import Colors, FontWeight, Icons, alignment, margin
 from app.models import init_db
 from app.services import CuentaService, MovimientoService
 
@@ -33,18 +34,18 @@ def main(page: ft.Page):
             # Tarjeta de saldo total
             tarjeta_total = ft.Container(
                 content=ft.Column([
-                    ft.Text("Saldo Total", size=14, color=ft.colors.WHITE70),
-                    ft.Text(f"${total_saldo:,.2f}", size=32, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
-                    ft.Text(f"{len(cuentas)} cuentas", size=12, color=ft.colors.WHITE54),
+                    ft.Text("Saldo Total", size=14, color=Colors.WHITE70),
+                    ft.Text(f"${total_saldo:,.2f}", size=32, weight=FontWeight.BOLD, color=Colors.WHITE),
+                    ft.Text(f"{len(cuentas)} cuentas", size=12, color=Colors.WHITE54),
                 ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.START),
                 gradient=ft.LinearGradient(
-                    colors=[ft.colors.BLUE_700, ft.colors.PURPLE_600],
-                    begin=ft.alignment.top_left,
-                    end=ft.alignment.bottom_right,
+                    colors=[Colors.BLUE_700, Colors.PURPLE_600],
+                    begin=alignment.top_left,
+                    end=alignment.bottom_right,
                 ),
                 padding=20,
                 border_radius=16,
-                margin=ft.margin.only(left=16, right=16, top=16, bottom=8),
+                margin=margin.only(left=16, right=16, top=16, bottom=8),
             )
 
             # Lista de cuentas
@@ -53,19 +54,19 @@ def main(page: ft.Page):
                 item = ft.ListTile(
                     leading=ft.CircleAvatar(
                         content=ft.Icon(
-                            ft.icons.ACCOUNT_BALANCE_WALLET if cuenta.tipo == "general" 
-                            else ft.icons.SAVINGS,
-                            color=ft.colors.WHITE
+                            Icons.ACCOUNT_BALANCE_WALLET if cuenta.tipo == "general" 
+                            else Icons.SAVINGS,
+                            color=Colors.WHITE
                         ),
-                        bgcolor=ft.colors.BLUE if cuenta.tipo == "general" else ft.colors.GREEN,
+                        bgcolor=Colors.BLUE if cuenta.tipo == "general" else Colors.GREEN,
                     ),
-                    title=ft.Text(cuenta.nombre, weight=ft.FontWeight.W_500),
+                    title=ft.Text(cuenta.nombre, weight=FontWeight.W_500),
                     subtitle=ft.Text(f"{cuenta.tipo.capitalize()}", size=12),
                     trailing=ft.Text(
                         f"${cuenta.saldo_actual:,.2f}",
-                        weight=ft.FontWeight.BOLD,
+                        weight=FontWeight.BOLD,
                         size=16,
-                        color=ft.colors.GREEN if cuenta.saldo_actual >= 0 else ft.colors.RED,
+                        color=Colors.GREEN if cuenta.saldo_actual >= 0 else Colors.RED,
                     ),
                     on_click=lambda e, cid=cuenta.id: navegar_a_movimientos(cid),
                 )
@@ -76,9 +77,9 @@ def main(page: ft.Page):
                 ft.Container(
                     content=ft.Column([
                         ft.Row([
-                            ft.Text("Mis Cuentas", size=18, weight=ft.FontWeight.BOLD),
+                            ft.Text("Mis Cuentas", size=18, weight=FontWeight.BOLD),
                             ft.IconButton(
-                                icon=ft.icons.ADD,
+                                icon=Icons.ADD,
                                 icon_size=24,
                                 on_click=lambda e: mostrar_dialogo_nueva_cuenta()
                             ),
@@ -86,9 +87,9 @@ def main(page: ft.Page):
                     ] + lista_cuentas if lista_cuentas else [
                         ft.Container(
                             content=ft.Column([
-                                ft.Icon(ft.icons.ACCOUNT_BALANCE_WALLET_OUTLINED, size=48, color=ft.colors.GREY_400),
-                                ft.Text("No hay cuentas", color=ft.colors.GREY_600),
-                                ft.Text("Toca + para agregar tu primera cuenta", size=12, color=ft.colors.GREY_500),
+                                ft.Icon(Icons.ACCOUNT_BALANCE_WALLET_OUTLINED, size=48, color=Colors.GREY_400),
+                                ft.Text("No hay cuentas", color=Colors.GREY_600),
+                                ft.Text("Toca + para agregar tu primera cuenta", size=12, color=Colors.GREY_500),
                             ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                             padding=40,
                         )
@@ -121,22 +122,22 @@ def main(page: ft.Page):
                 item = ft.ListTile(
                     leading=ft.CircleAvatar(
                         content=ft.Icon(
-                            ft.icons.ARROW_DOWNWARD if es_ingreso else ft.icons.ARROW_UPWARD,
-                            color=ft.colors.WHITE,
+                            Icons.ARROW_DOWNWARD if es_ingreso else Icons.ARROW_UPWARD,
+                            color=Colors.WHITE,
                             size=20
                         ),
-                        bgcolor=ft.colors.GREEN if es_ingreso else ft.colors.RED,
+                        bgcolor=Colors.GREEN if es_ingreso else Colors.RED,
                     ),
-                    title=ft.Text(mov.descripcion or "Sin descripción", weight=ft.FontWeight.W_500),
+                    title=ft.Text(mov.descripcion or "Sin descripción", weight=FontWeight.W_500),
                     subtitle=ft.Text(
                         f"{mov.categoria or 'General'} • {mov.fecha.strftime('%d/%m/%Y %H:%M')}",
                         size=12
                     ),
                     trailing=ft.Text(
                         f"+${mov.monto:,.2f}" if es_ingreso else f"-${mov.monto:,.2f}",
-                        weight=ft.FontWeight.BOLD,
+                        weight=FontWeight.BOLD,
                         size=16,
-                        color=ft.colors.GREEN if es_ingreso else ft.colors.RED,
+                        color=Colors.GREEN if es_ingreso else Colors.RED,
                     ),
                 )
                 lista_movimientos.append(item)
@@ -146,10 +147,10 @@ def main(page: ft.Page):
                     content=ft.Column([
                         ft.Row([
                             ft.IconButton(
-                                icon=ft.icons.ARROW_BACK,
+                                icon=Icons.ARROW_BACK,
                                 on_click=lambda e: volver_al_inicio()
                             ),
-                            ft.Text(cuenta.nombre, size=20, weight=ft.FontWeight.BOLD),
+                            ft.Text(cuenta.nombre, size=20, weight=FontWeight.BOLD),
                         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                         ft.Divider(),
                         ft.Row([
@@ -157,8 +158,8 @@ def main(page: ft.Page):
                             ft.Text(
                                 f"${cuenta.saldo_actual:,.2f}",
                                 size=24,
-                                weight=ft.FontWeight.BOLD,
-                                color=ft.colors.GREEN if cuenta.saldo_actual >= 0 else ft.colors.RED,
+                                weight=FontWeight.BOLD,
+                                color=Colors.GREEN if cuenta.saldo_actual >= 0 else Colors.RED,
                             ),
                         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                     ]),
@@ -167,18 +168,18 @@ def main(page: ft.Page):
                 ft.Container(
                     content=ft.Column([
                         ft.Row([
-                            ft.Text("Movimientos Recientes", size=16, weight=ft.FontWeight.BOLD),
+                            ft.Text("Movimientos Recientes", size=16, weight=FontWeight.BOLD),
                             ft.IconButton(
-                                icon=ft.icons.ADD_CIRCLE,
-                                icon_color=ft.colors.BLUE,
+                                icon=Icons.ADD_CIRCLE,
+                                icon_color=Colors.BLUE,
                                 on_click=lambda e: mostrar_dialogo_nuevo_movimiento()
                             ),
                         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                     ] + lista_movimientos if lista_movimientos else [
                         ft.Container(
                             content=ft.Column([
-                                ft.Icon(ft.icons.RECEIPT_LONG_OUTLINED, size=48, color=ft.colors.GREY_400),
-                                ft.Text("Sin movimientos", color=ft.colors.GREY_600),
+                                ft.Icon(Icons.RECEIPT_LONG_OUTLINED, size=48, color=Colors.GREY_400),
+                                ft.Text("Sin movimientos", color=Colors.GREY_600),
                             ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                             padding=40,
                         )
@@ -324,4 +325,4 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
-    ft.app(target=main)
+    ft.run(target=main)
